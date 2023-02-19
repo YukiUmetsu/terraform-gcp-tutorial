@@ -46,3 +46,56 @@ https://www.udemy.com/course/terraform-for-beginners-using-google-cloud-platform
 
 2. google cloud shell
 3. service account key
+
+<br/>
+
+# Networking
+- VPC
+    - VPC networks are logically isolated from each other in Google
+Cloud.
+    - VPC is a global resource & consist of subnets in one or more region
+    - It is possible to control all the traffic which is coming in and going
+outside a VPC 
+
+<br> 
+
+- VPC Subnets
+    - Subnets are regional resources and have IP address
+ranges associated with them
+    - You create instances, containers, and the like in these subnets. When you create an instance, you must create it in a subnet, and the instance draws its internal IP address from that subnet.
+    - Resources in public subnet CAN be accessed from
+internet
+    - Resources in private subnet CANNOT be accessed from
+internet
+
+<br> 
+
+- CIDR (Classless Inter-Domain Routing) Blocks
+    - CIDR blocks represent groups of IP addresses that have the same network prefixes and number of bits.
+    - A CIDR block consist of a starting IP address (69.208.0.0) and a range (/28) 
+    - Quick Tip: 69.208.0.0/28 shows that the first 28 bits out of 32 are fixed.  (Last 4 bits can change. 2 to power 4 = 16 addresses)
+    - Best place to understand CIDR block: https://cidr.xyz/
+
+<br> 
+
+- GCP firewall
+    - Each firewall rule has priority of (0-65535) assigned to it (0 has highest priority. 65525 has lowest priority)
+
+    - ***Ingress Rules***: Incoming traffic from outside to GCP targets
+        - Target (defines destination)
+        - Source (defines where the traffic is coming from)
+
+    <br/>
+    
+    - ***Egress Rules***: Outgoing traffic to destination from GCP targets
+        - Target (defines the source)
+        - Destination: CIDR Block
+    
+    <br/>
+
+    - Firewall rule components:
+        - Direction
+        - Priority
+        - Action on match
+        - Target
+        - Protocol
