@@ -137,3 +137,149 @@ Cloud Run is a managed compute platform that lets you run containers directly on
     <br>
 
 - ***Array jobs*** are a faster way to process jobs that can be split into multiple independent tasks. For example, if you are reading 1,000 images from Cloud Storage to resize and crop them, processing them consecutively will be slower than processing them all at the same time with many container instances.
+
+
+
+
+
+<br>
+
+
+# Terraform Commands
+
+```
+# help
+terraform import -help
+
+# auto approval
+terraform apply -auto-approve    
+
+
+# show resource under terraform management (after apply)
+terraform state list
+terraform state show [resource]
+
+# remove resource from the tfstate
+terraform state rm google_storage_bucket.bucketterraform2
+
+```
+terraform.tfstate file gets created after applying.
+
+
+
+
+###  Basic commans
+```
+# run this in a folder with terraform files
+terraform init
+
+# validate
+terraform validate
+
+# format
+terraform fmt
+
+# execution simulate
+terraform plan
+
+# execute it
+terraform apply
+```
+
+### import existing infrastructure
+```
+terraform import [options] ADDRESS ID
+
+
+# main.tf
+resource "aws_s3_bucket" "sample_bucket" {
+    bucket = "sample-bucket"
+}
+
+# command
+terraform import aws_s3_bucket.sample_bucket sample-bucket
+```
+sample-bucket will be added to ***tfstate*** and will be managed by terraform.
+
+
+<br>
+
+# Terraform Workspace
+Workspaces in Terraform are simply independently managed state files. Terraform starts with a single, default workspace named default that you cannot delete. 
+
+## Use Cases
+Workspaces are convenient in a number of situations:
+
+***Multiple Environments***: One common need in infrastructure management is to build multiple environments, with mostly the same setup but keeping a few variables different, like networking and sizing.
+1. Production
+2. Staging
+3. Development
+
+<br>
+
+***Multiple Regions/Locations***: Replicate infrastructure in multiple places for High Availability (HA) and Disaster Recovery (DR).
+1. us-east-1
+2. eu-west-2
+
+<br>
+
+***Multiple Accounts/Subscriptions***: Create infrastructure in multiple accounts.
+1. Cloud Account 1
+2. Cloud Account 2
+
+<br>
+
+***Testing and Research***: Quickly create a new infrastructure for temporary pilot testing, freely experiment or R&D purpose, and destroy it with single command.
+
+<br>
+
+you may include the name of the current workspace using the `${terraform.workspace}`
+
+```
+resource "aws_instance" "example" {
+  count = "${terraform.workspace == "default" ? 5 : 1}"
+
+  # ... other arguments
+}
+```
+
+
+## commands
+```
+# List Workspace
+terraform workspace list
+
+# Create new workspace
+terraform workspace new <name>
+
+# Show current workspace
+terraform workspace show
+
+# Switch Workspace
+terraform workspace select <workspace name>
+
+# Delete the Workspace
+terraform workspace delete <workspace name>
+
+```
+
+## state management with workspace
+If you create a new workspace, instead of terraform.tfstate.d file, it creates this folder structure
+
+terraform.tfstate.d > [workspace name]
+
+check tf_commands/terraform_workspace folder.
+
+```
+[dev]
+terraform workspace new dev
+terraform workspace select dev
+terraform apply -var-file dev.tfvars -auto-approve
+terraform destroy -var-file dev.tfvars -auto-approve
+
+[stage]
+terraform workspace new stage
+terraform workspace select stage
+terraform apply -var-file stage.tfvars -auto-approve
+terraform destroy -var-file stage.tfvars -auto-approve
+```
