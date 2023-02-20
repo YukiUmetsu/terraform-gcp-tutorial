@@ -99,3 +99,41 @@ internet
         - Action on match
         - Target
         - Protocol
+
+<br>
+
+# GCP Load Balancer
+
+![gcp_load_balancer](./images/gcp-load-balancer.jpg)
+
+ - create an instance template
+ - create an instance group from the instance template (auto scaling settings)
+ - create a load balancer (layer 4 & 7, set frontend, backend)
+
+<br>
+
+## Google Front End Service
+ - intermediary gateway, router
+ - make it available on the internet
+ - TLS with certificates
+ - DoS attacks protection
+
+<br>
+
+
+# Cloud Run
+Cloud Run is a managed compute platform that lets you run containers directly on top of Google's scalable infrastructure. In order for your service or job to be deployable to Cloud Run, you must package it in a container image.
+
+- ***Cloud Run services***: Used to run code that responds to web requests, or events.
+    - trafic splitting per revisions (50% for revision-1 etc)
+    
+    <br>
+    
+- ***Cloud Run jobs***: Used to run code that performs work (a job) and quits when the work is done.
+    - Scheduled job
+    - Array job
+    - Script or tool
+
+    <br>
+
+- ***Array jobs*** are a faster way to process jobs that can be split into multiple independent tasks. For example, if you are reading 1,000 images from Cloud Storage to resize and crop them, processing them consecutively will be slower than processing them all at the same time with many container instances.
